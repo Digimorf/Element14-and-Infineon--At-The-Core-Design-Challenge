@@ -1,7 +1,7 @@
 # "ATCDC: Digimorf, SEGA SG-1000 Emulator on PSoC62S4 Pioneer kit, everything unveiled!
 ![Project artwork](https://community-storage.element14.com/communityserver-components-secureimagefileviewer/communityserver/blogs/components/weblogfiles/00/00/00/03/92/2335.Header.jpg-1440x400x2.jpg?sv=2016-05-31&sr=b&sig=3BFLNlTmUQElDTICPq2tPS5CSQzkVX26Ro2V594stxY=&se=2023-07-20T23:59:59Z&sp=r&_=0tCQSh%20Vpjrzb5r%20BEXNfA==)
 
-# *SEGA SG-1000 Emulator on PSoC62S4 Pioneer kit*
+**SEGA SG-1000 Emulator on PSoC62S4 Pioneer kit**
 
 Hi everyone!
 
@@ -46,7 +46,7 @@ The emulator will have to perform different tasks divided into time intervals so
 
 I won't go too much into the details of the emulation, but this means that considering the VGA standard timings:
 
-## Horizontal timing (line)
+**Horizontal timing (line)**
 
 Polarity of horizontal sync pulse is negative.
 | Scanline part | Pixels | Time [µs] |
@@ -57,7 +57,7 @@ Polarity of horizontal sync pulse is negative.
 | Back porch| 48 | 1.9066534260179 | 
 | Whole line | 800 | 31.777557100298 |
 
-## Vertical timing (frame)
+**Vertical timing (frame)**
 
 Polarity of vertical sync pulse is negative.
 | Frame part	| Lines	| Time [ms] |
