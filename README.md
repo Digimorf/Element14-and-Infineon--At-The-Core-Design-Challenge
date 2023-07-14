@@ -14,13 +14,16 @@ This final post wants to officially be a more exhaustive description of this pro
 ## 1.0 - Introduction
 
 ![SEGA SG-1000](https://community.element14.com/resized-image/__size/658x318/__key/communityserver-blogs-components-weblogfiles/00-00-00-03-92/variation_5F00_5F00_5F00_img_5F00_5F00_5F00_2.jpg)
+
 The idea for this project came to me while looking at this PSoC62 Pioneer Kit. On the PCB it features a "Touchpad" which reminded me of a Joypad. The challenge launched by Element14 together with Infineon proposed reaching the limits of this system, trying to exploit the characteristics of the on-board microcontroller.
 
 As I explained in my posts during this challenge, I'm a retro enthusiast and have written several emulators in the past. My favorite system, which was the first one I had in my youth, is the SEGA SG-1000 console. So I wanted to rewrite one of the SEGA SG-1000 emulators that I have written and port it to the board in question.
 
 **1.1 - Difficulties and limits**
 
-![SEGA SG-100 mainbord](https://community.element14.com/resized-image/__size/480x720/__key/communityserver-blogs-components-weblogfiles/00-00-00-03-92/6661.Sega_5F00_5F00_5F00_SG_5F00_2D00_5F00_1000_5F00_2D00_5F00_v1_5F00_2D00_5F00_PCB.jpg)Emulating a game console is a rather complex, resource-intensive project. I thought it was a perfect candidate to push the PSoC62 Pioneer Kit to the limit.
+![SEGA SG-100 mainbord](https://community.element14.com/resized-image/__size/480x720/__key/communityserver-blogs-components-weblogfiles/00-00-00-03-92/6661.Sega_5F00_5F00_5F00_SG_5F00_2D00_5F00_1000_5F00_2D00_5F00_v1_5F00_2D00_5F00_PCB.jpg)
+
+Emulating a game console is a rather complex, resource-intensive project. I thought it was a perfect candidate to push the PSoC62 Pioneer Kit to the limit.
 
 I can say that an emulator is divided into two main areas: Virtual Machine and Hardware Input/output. The microcontroller on board is a dual-core Arm Cortex M4/M0+, so I can divide these areas into one core each.
 
@@ -28,13 +31,17 @@ The two cores are configurable through the ModusToolbox ecosystem, so it is poss
 
 In the end, I decided to set the CM4 core at 150MHz and the CM0+ at 75MHz. I left the emulation of the Input/Output hardware components at the CM0+ core, and the execution of the virtual machine at the CM4 core. That means that the cm0+ will generate the VGA video and the audio signals, it will handle also the Capsense joypad, and it will synchronize the execution of the virtual machine in the CM4 core.
 
-![CY8CKIT-062S4 PSoC 62S4 pioneer kit](https://community.element14.com/resized-image/__size/480x720/__key/communityserver-blogs-components-weblogfiles/00-00-00-03-92/7206.CY8CKIT.jpg)Another aspect that is difficult to manage is the division of the SRAM between the two cores. The original hardware to be emulated has 2Kb of RAM, 16Kb of special VRAM used by the Video Display Processor, and last but not least, the memory used by the game cartridge.
+![CY8CKIT-062S4 PSoC 62S4 pioneer kit](https://community.element14.com/resized-image/__size/480x720/__key/communityserver-blogs-components-weblogfiles/00-00-00-03-92/7206.CY8CKIT.jpg)
+
+Another aspect that is difficult to manage is the division of the SRAM between the two cores. The original hardware to be emulated has 2Kb of RAM, 16Kb of special VRAM used by the Video Display Processor, and last but not least, the memory used by the game cartridge.
 
 The Infineon PSoC 6 MCU in the Pioneer Kit is the CY8C6244LQI-S4D92, which has 128Kb SRAM and 256Kb flash ROM. Apparently, everything should work perfectly, but it is not so obvious. The microcontroller must generate a video signal, which for the console to be emulated, must have a resolution of 256x192 pixels, therefore, unless it were possible to generate all the graphics on the fly, a frame buffer of about 49Kb is needed to host a video frame.
 
 Then, in the same way, the audio generation relies on a buffer that contains all the samples to stream. in this case, we need one of around 1Kb (more on this later). Don't forget that the source code of the emulator will create variables, temporary buffers, etc. in a stack, so you need to give a reasonable space to stack and heap.
 
-![VGA timings](https://community.element14.com/resized-image/__size/662x446/__key/communityserver-blogs-components-weblogfiles/00-00-00-03-92/3000.VGAtimings.png)Speed is also crucial, since the cm0+ core must be able to generate a standard VGA signal, and the CM4 core must be able to perform a number of calculations to emulate a 3.58MHz CPU, a 10.74MHz VDP, and a Programmable Sound Generator (PSG) at 3.58MHz, in order to display graphics, sound and manage a Joypad in real-time.
+![VGA timings](https://community.element14.com/resized-image/__size/662x446/__key/communityserver-blogs-components-weblogfiles/00-00-00-03-92/3000.VGAtimings.png)
+
+Speed is also crucial, since the cm0+ core must be able to generate a standard VGA signal, and the CM4 core must be able to perform a number of calculations to emulate a 3.58MHz CPU, a 10.74MHz VDP, and a Programmable Sound Generator (PSG) at 3.58MHz, in order to display graphics, sound and manage a Joypad in real-time.
 
 Two months were available for this project, so I had to accept a compromise between the quality and usability of the emulator.
 
@@ -94,6 +101,7 @@ The routing shown in the system schematic of the ModusToolbox Device Configurato
 **2.1 - Hardware side on CM0+**
 
 The CM0+ core takes care of driving the hardware interfaces for the emulator, such as Video, Audio, and I/O. So I started first with the development of the VGA video driver since it's the unit that rules all the emulation.
+
 **2.1.1 - VGA DAC**
 
 As I mentioned earlier, the video signal generated complies with the VGA standard, therefore with a vertical frequency of 60Hz and a horizontal one of 31.468 kHz. The vertical resolution maintains the standard of 525 total lines for a visible vertical area of 480 lines, while for the horizontal resolution, we will use a "Pixel Clock" which we will configure to obtain a resolution suitable for the emulation.
@@ -104,7 +112,7 @@ The Pioneer Kit does not have a VGA video output, but building it is very simple
 
 ![enter image description here](https://community.element14.com/resized-image/__size/1304x1038/__key/communityserver-blogs-components-weblogfiles/00-00-00-03-92/8132.RGBDAC.png)
 
-This little circuit is a triple analog-to-digital converter that takes the values of Red, Green and Blue and converts them into voltages using simple resistors. The proposed circuit offers a resolution of 8 shades of Red and Green, while only 4 for Blue, which however are sufficient for the visual impact. This division is called "color depth" and is usually referred to as "BPP" or bits per plane.  
+This little circuit is a triple analog-to-digital converter that takes the values of Red, Green, and Blue and converts them into voltages using simple resistors. The proposed circuit offers a resolution of 8 shades of Red and Green, while only 4 for Blue, which however are sufficient for the visual impact. This division is called "color depth" and is usually referred to as "BPP" or bits per plane.  
 The signal will therefore be rgb332 and will allow us to obtain 256 colors and the following palette.
 
 ![image](https://community.element14.com/resized-image/__size/876x494/__key/communityserver-blogs-components-weblogfiles/00-00-00-03-92/8053.palette_2D00_rgb332.png)
@@ -138,7 +146,9 @@ The project was derived from the "Dual-CPU Empty PSoC6 App" example project with
 The VGA driver is capable of generating a video signal that complies with the VGA standard, so it should be compatible with most TV/Monitors that can connect to a PC.  
 The generated signal consists of the generation of 60 frames per second composed of a sequence of 525 scanlines. The scanlines are divided into groups or areas: Vertical Sync, the Back Porch which precedes the actual image, the Active Area with the image made up of 480 lines of pixels, and finally the Front Porch which closes the image.
 
-![image](https://community.element14.com/resized-image/__size/1718x1930/__key/communityserver-blogs-components-weblogfiles/00-00-00-03-92/2352.VGA_5F00_VideoDriver_5F00_Frame.png)For more details, you can check my posts on this blog, but here I can say that all the scanlines are composed of the two sync signals (Horizontal and Vertical), ad the three color signals (R, G, B). In all scanlines, there is a horizontal sync pulse, and the vertical sync signal is high, except for the vertical sync period, which presents two lines with a low state for the vertical sync.
+![image](https://community.element14.com/resized-image/__size/1718x1930/__key/communityserver-blogs-components-weblogfiles/00-00-00-03-92/2352.VGA_5F00_VideoDriver_5F00_Frame.png)
+
+For more details, you can check my posts on this blog, but here I can say that all the scanlines are composed of the two sync signals (Horizontal and Vertical), ad the three color signals (R, G, B). In all scanlines, there is a horizontal sync pulse, and the vertical sync signal is high, except for the vertical sync period, which presents two lines with a low state for the vertical sync.
 
 The color signals are at a blank level (black) in all scanlines except in the Active Area, where they are modulated thanks to the data coming from the frame buffer and combined together by the resistor DAC.
 
