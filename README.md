@@ -1,7 +1,7 @@
 # "ATCDC: Digimorf, SEGA SG-1000 Emulator on PSoC62S4 Pioneer kit, everything unveiled!
 ![Project artwork](https://community-storage.element14.com/communityserver-components-secureimagefileviewer/communityserver/blogs/components/weblogfiles/00/00/00/03/92/2335.Header.jpg-1440x400x2.jpg?sv=2016-05-31&sr=b&sig=3BFLNlTmUQElDTICPq2tPS5CSQzkVX26Ro2V594stxY=&se=2023-07-20T23:59:59Z&sp=r&_=0tCQSh%20Vpjrzb5r%20BEXNfA==)
 
-***SEGA SG-1000 Emulator on PSoC62S4 Pioneer kit***
+# *SEGA SG-1000 Emulator on PSoC62S4 Pioneer kit*
 
 Hi everyone!
 
