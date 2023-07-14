@@ -11,7 +11,7 @@ In these two months, I have tried to share all the salient steps in the creation
 
 This final post wants to officially be a more exhaustive description of this project.
 
-**1.0 - Introduction**
+## 1.0 - Introduction
 
 ![SEGA SG-1000](https://community.element14.com/resized-image/__size/658x318/__key/communityserver-blogs-components-weblogfiles/00-00-00-03-92/variation_5F00_5F00_5F00_img_5F00_5F00_5F00_2.jpg)
 The idea for this project came to me while looking at this PSoC62 Pioneer Kit. On the PCB it features a "Touchpad" which reminded me of a Joypad. The challenge launched by Element14 together with Infineon proposed reaching the limits of this system, trying to exploit the characteristics of the on-board microcontroller.
@@ -46,7 +46,7 @@ The emulator will have to perform different tasks divided into time intervals so
 
 I won't go too much into the details of the emulation, but this means that considering the VGA standard timings:
 
-**Horizontal timing (line)**
+*Horizontal timing (line)*
 
 Polarity of horizontal sync pulse is negative.
 | Scanline part | Pixels | Time [µs] |
@@ -57,7 +57,7 @@ Polarity of horizontal sync pulse is negative.
 | Back porch| 48 | 1.9066534260179 | 
 | Whole line | 800 | 31.777557100298 |
 
-**Vertical timing (frame)**
+*Vertical timing (frame)*
 
 Polarity of vertical sync pulse is negative.
 | Frame part	| Lines	| Time [ms] |
@@ -79,7 +79,7 @@ https://youtu.be/izYSrum5AMo
 
 I decided to use "Space Invaders" for one reason only: The Capsense area present on the Pioneer Kit has 1 axis direction slider and two buttons, which is perfect for this game. I used the slider as a rotary encoder, and the two buttons as normal fire buttons.
 
-**2.0 - Architecture**
+## 2.0 - Architecture
 
 Let's examine the architecture of this project in the following schematic:
 
@@ -294,7 +294,7 @@ As soon as you turn on the console, the Z80 CPU starts reading the code from the
 
 The VDP and PSG also have continuous output which is affected by internal registers which are modified by the Z80. Usually to obtain some stability the Z80 accesses these components when the VDP is not drawing the video frame. Then, to reduce the number of operations that the CM4 core has to perform in the time of a scanline, I can render only the graphics during the Active Area of the VGA signal, and subsequently during the vertical blank area, run the Z80 and render the samples audio.
 
-**3.0 - Conclusion**
+## 3.0 - Conclusion
 
 Summing up, this project allowed me to get to know the PSoC62, and at the same time share a learning path with all of you, developing an application that could push this MCU to the maximum.
 
@@ -311,7 +311,7 @@ Otherwise, the tools offered by ModusToolbox are extremely useful and easy to us
 
 **3.1 - The project**
 
-This project has been documented duringthe "At the core" design challenge at Element14 community, you can read all the posts of the bloh here:
+This project has been documented during the "At the core" design challenge at the Element14 community, you can read all the posts of the blog here:
 
 [At the core design challenge winner blog: SEGA SG-1000 Emulator on PSoC62](https://community.element14.com/members/digimorf/blogs)
 
