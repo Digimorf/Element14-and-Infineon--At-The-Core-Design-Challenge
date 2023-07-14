@@ -1,7 +1,7 @@
 # "ATCDC: Digimorf, SEGA SG-1000 Emulator on PSoC62S4 Pioneer kit, everything unveiled!
 ![Project artwork](https://community-storage.element14.com/communityserver-components-secureimagefileviewer/communityserver/blogs/components/weblogfiles/00/00/00/03/92/2335.Header.jpg-1440x400x2.jpg?sv=2016-05-31&sr=b&sig=3BFLNlTmUQElDTICPq2tPS5CSQzkVX26Ro2V594stxY=&se=2023-07-20T23:59:59Z&sp=r&_=0tCQSh%20Vpjrzb5r%20BEXNfA==)
 
-**SEGA SG-1000 Emulator on PSoC62S4 Pioneer kit**
+***SEGA SG-1000 Emulator on PSoC62S4 Pioneer kit***
 
 Hi everyone!
 
@@ -10,12 +10,14 @@ Here we are at the conclusion of this adventure in the world of Infineon with my
 In these two months, I have tried to share all the salient steps in the creation of a SEGA SG-1000 console emulator. Since the purpose of this challenge was to push this system to its limits, I felt it was important to share the steps taken by a developer using a PSoC6 for the first time for the realization of a multi-disciplinary project: generation of a video signal, generation of audio in real-time, implementation of a virtual machine, all trying to use the resources (limited for this type of project) of this microcontroller.
 
 This final post wants to officially be a more exhaustive description of this project.
+
 **1.0 - Introduction**
 
 ![SEGA SG-1000](https://community.element14.com/resized-image/__size/658x318/__key/communityserver-blogs-components-weblogfiles/00-00-00-03-92/variation_5F00_5F00_5F00_img_5F00_5F00_5F00_2.jpg)
 The idea for this project came to me while looking at this PSoC62 Pioneer Kit. On the PCB it features a "Touchpad" which reminded me of a Joypad. The challenge launched by Element14 together with Infineon proposed reaching the limits of this system, trying to exploit the characteristics of the on-board microcontroller.
 
 As I explained in my posts during this challenge, I'm a retro enthusiast and have written several emulators in the past. My favorite system, which was the first one I had in my youth, is the SEGA SG-1000 console. So I wanted to rewrite one of the SEGA SG-1000 emulators that I have written and port it to the board in question.
+
 **1.1 - Difficulties and limits**
 
 ![SEGA SG-100 mainbord](https://community.element14.com/resized-image/__size/480x720/__key/communityserver-blogs-components-weblogfiles/00-00-00-03-92/6661.Sega_5F00_5F00_5F00_SG_5F00_2D00_5F00_1000_5F00_2D00_5F00_v1_5F00_2D00_5F00_PCB.jpg)Emulating a game console is a rather complex, resource-intensive project. I thought it was a perfect candidate to push the PSoC62 Pioneer Kit to the limit.
